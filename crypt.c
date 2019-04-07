@@ -7,7 +7,6 @@ void init_gcrypt() {
   // all subsystems
   if (!gcry_check_version(GCRYPT_VERS)) {
     fputs("Wrong libcrypt version installed.\n", stderr);
-    // endwin();
     exit(2);
   }
 
@@ -59,7 +58,8 @@ int init_aes256(gcry_cipher_hd_t *handle, unsigned char *key,
   return 0;
 }
 
-int decrypt_text_from_file(const char *infile, char *password, char **outtext) {
+int decrypt_text_from_file(const char *infile, char *password,
+                           char (*outtext)[ALLOWED_CHARS]) {
   unsigned char kdf_salt[8], init_vector[16], aes_key[32],
                 *packed_data;
   size_t file_size, ciphertext_len;
@@ -74,7 +74,7 @@ int decrypt_text_from_file(const char *infile, char *password, char **outtext) {
 
   // Allocate memory for ciphertext
   ciphertext_len = (file_size - 8) - 16;
-  *outtext = malloc(ciphertext_len);
+  // *outtext = malloc(ciphertext_len);
   if (*outtext == NULL) {
     fprintf(stderr, "Error: Could not allocate memory for ciphertext!"
                     " File too large?\n");

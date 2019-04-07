@@ -1,5 +1,5 @@
 #include "crypt.h"
-#include <curses.h> // "UI"
+#include "primitive_txt.h"
 #include "io.h"
 #include <stdio.h>
 #include <stdlib.h>

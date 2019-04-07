@@ -1,10 +1,5 @@
 /* A very primitive text editor with limited amount of characters */
-#include <stdio.h>
-#include <ncurses.h>
-#include <stdlib.h>
-
-#define ALLOWED_CHARS 5000
-#define QUIT_KEY      KEY_F(5)
+#include "primitive_txt.h"
 
 // Global variable for number of lines
 int line_no = 0;
@@ -35,10 +30,6 @@ int primitive_txt(char txt[ALLOWED_CHARS]) {
   WINDOW *win;              // Main window
 
   /* Initialization of variables & ncurses */
-  for (int i = 0; i < ALLOWED_CHARS; i++) {
-    chars[i] = 0;
-  }
-
   // Initialization of ncurses
   initscr();
   // Each character is read, no wait for newline
@@ -50,7 +41,34 @@ int primitive_txt(char txt[ALLOWED_CHARS]) {
   // Special characters enabled
   keypad(win, TRUE);
   keypad(stdscr, TRUE);
+  // Initialization of variables
+  if (txt[0] != 0) {
+    // Iterate through the text reading in the number of characters
+    // per line and the number of lines
+    int line = 0;
+    for (int i = 0; i < ALLOWED_CHARS; i++) {
+      if (txt[i] != 0) {
+        chars[line]++;
+        if (txt[i] == '\n') {
+          line++;
+          line_no++;
+        }
+      } else {
+        break;
+      }
+    }
+    // Print text
+    wprintw(win, txt);
+    // Refresh changes
+    refresh();
+    wrefresh(win);
+  } else {
+    for (int i = 0; i < ALLOWED_CHARS; i++) {
+      chars[i] = 0;
+    }
+  }
   /* End of init */
+
 
   /* Main loop */
   int ch;
@@ -157,11 +175,13 @@ int primitive_txt(char txt[ALLOWED_CHARS]) {
 
 /*
 int main(void) {
-  char buf[20];
   char *txt;
   txt = malloc(ALLOWED_CHARS * sizeof(char));
-  printf("Press \"Enter\" to enter text entry mode, then \"F5\" to finish:\n");
-  fgets(buf, sizeof(buf), stdin);
+  txt[0] = 'a';
+  txt[1] = 'b';
+  txt[2] = '\n';
+  txt[3] = 'c';
+  txt[4] = '\0';
 
   primitive_txt(txt);
 
