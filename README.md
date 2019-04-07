@@ -13,7 +13,7 @@ To decrypt and edit a file, e.g. "creativetitle_2":
 ```bash
 ./encrn -d creativetitle_2
 ```
-This will open an editor you can use to view and edit your file. Press **F5** to save and quit.
+This will open an editor you can use to view and edit your file after entering the correct password. *If a wrong password is entered, gibberish will be displayed.* Press **F5** to save and quit.
 
 ## ToDos
 * The editor could be a bit more civilized
